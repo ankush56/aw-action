@@ -1,0 +1,24 @@
+name: 'Hello Action Metadata'
+description: "Greet Someone"
+inputs:
+  person:
+    description: 'person'
+    required: true
+    default: 'Superman'
+outputs:
+  random-number:
+    description: 'Random Number'
+    value: ${{ steps.random-number-generator.outputs.random-id }}
+
+runs:
+  using: "composite"
+  steps:
+    - run: echo Hello ${{ inputs.person }}
+      shell: bash
+    - id: random-number-generator
+      run: echo "::set-output name=random-id::$(echo $RANDOM)"
+      shell: bash
+    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+      shell: bash
+    - run: goodbye.sh
+      shell: bash
